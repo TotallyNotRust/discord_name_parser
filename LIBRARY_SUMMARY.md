@@ -28,16 +28,16 @@ use discord_name_parser::UserDatabase;
 let db = UserDatabase::from_file("discord_users.json")?;
 
 // Search by ID → Returns names
-if let Some(names) = db.get_names_by_id("1315621978648084484") {
+if let Some(names) = db.get_names_by_id("1000000000648084484") {
     println!("Names: {:?}", names);
 }
 
 // Search by name (exact) → Returns IDs
-let ids = db.find_ids_by_name("Zoot");
+let ids = db.find_ids_by_name("Person1");
 println!("User IDs: {:?}", ids);
 
 // Search by name (fuzzy/like) → Returns IDs + matched names
-let matches = db.find_ids_by_name_like("mustafa");
+let matches = db.find_ids_by_name_like("person");
 for (id, matched_names) in matches {
     println!("{}: {:?}", id, matched_names);
 }

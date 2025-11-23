@@ -198,25 +198,25 @@ async fn search(
 ### Search by ID
 ```rust
 // Returns Option<&Vec<String>>
-db.get_names_by_id("1315621978648084484")
+db.get_names_by_id("1000000000648084484")
 ```
 
 ### Search by Exact Name
 ```rust
 // Returns Vec<String> of user IDs
-db.find_ids_by_name("Zoot")
+db.find_ids_by_name("Person")
 ```
 
 ### Search by Partial Name (fuzzy)
 ```rust
 // Returns Vec<(String, Vec<String>)> - (user_id, matching_names)
-db.find_ids_by_name_like("must")  // Case-insensitive
+db.find_ids_by_name_like("pers")  // Case-insensitive
 ```
 
 ### Combined Search
 ```rust
 // Returns SearchResult with both exact and partial matches
-let result = db.search_by_name("kevin");
+let result = db.search_by_name("John Doe");
 if result.has_matches() {
     // Handle exact_matches and partial_matches
 }

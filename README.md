@@ -47,11 +47,11 @@ if let Some(names) = db.get_names_by_id("1315621978648084484") {
 }
 
 // Search by name (exact)
-let ids = db.find_ids_by_name("Zoot");
+let ids = db.find_ids_by_name("Person");
 println!("User IDs: {:?}", ids);
 
 // Search by name (partial, case-insensitive)
-let matches = db.find_ids_by_name_like("mustafa");
+let matches = db.find_ids_by_name_like("Dude");
 for (id, matching_names) in matches {
     println!("{}: {:?}", id, matching_names);
 }
@@ -103,24 +103,24 @@ fn handle_whois(db: &UserDatabase, query: &str) -> String {
 
 ### First run (create new database):
 ```bash
-cargo run --release -- "F7 Duel Community"
+cargo run --release -- "Server"
 ```
 
 ### Update existing database:
 ```bash
-cargo run --release -- "F7 Duel Community" discord_users.json
+cargo run --release -- "Server" discord_users.json
 ```
 
 ### Scan multiple directories:
 ```bash
 # First directory
-cargo run --release -- "F7 Duel Community"
+cargo run --release -- "Server"
 
 # Update with second directory
-cargo run --release -- "F7 Duel Community 12-08-2025" discord_users.json
+cargo run --release -- "Server 12-08-2025" discord_users.json
 
 # Update with third directory
-cargo run --release -- "F7 Duel Community (2)" discord_users.json
+cargo run --release -- "Server (2)" discord_users.json
 ```
 
 ## Output Format
@@ -130,15 +130,12 @@ The tool outputs JSON in the following format:
 ```json
 {
   "1315621978648084484": [
-    "🅺🅽🅸🅵🅴🆁🆂",
-    "Chinese-made Bromazolam",
-    "ilovecats002",
-    "love spreader🥰",
-    "Ƒ7 Baccy Chan"
+    "Name1",
+    "Username1"
   ],
   "853343414330720302": [
-    "Zoot",
-    "dundundun_14"
+    "Name2",
+    "Username2"
   ]
 }
 ```
@@ -158,17 +155,14 @@ The tool outputs JSON in the following format:
 ## Example
 
 ```bash
-$ cargo run --release -- "../F7 Duel Community"
-Scanning directory: ../F7 Duel Community
+$ cargo run --release -- "../Server"
+Scanning directory: ../Server
 Found 14 HTML files
 
 {
   "1315621978648084484": [
-    "Chinese-made Bromazolam",
-    "ilovecats002",
-    "love spreader🥰",
-    "Ƒ7 Baccy Chan",
-    "🅺🅽🅸🅵🅴🆁🆂"
+    "Name1",
+    "Username1"
   ],
   ...
 }

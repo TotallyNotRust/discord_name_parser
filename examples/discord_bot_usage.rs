@@ -29,7 +29,7 @@ fn main() {
 
     // Example 2: Exact name search
     println!("=== Example 2: Find user IDs by exact name ===");
-    let name = "Zoot";
+    let name = "Jane Doe";
     let ids = db.find_ids_by_name(name);
     println!("Users with exact name '{}': {:?}", name, ids);
     for id in &ids {
@@ -41,7 +41,7 @@ fn main() {
 
     // Example 3: Partial/fuzzy name search
     println!("=== Example 3: Find users by partial name ===");
-    let pattern = "mustafa";
+    let pattern = "John Doe";
     let matches = db.find_ids_by_name_like(pattern);
     println!("Users matching '{}': {} results", pattern, matches.len());
     for (id, matching_names) in &matches {
@@ -54,7 +54,7 @@ fn main() {
 
     // Example 4: Advanced search with SearchResult
     println!("=== Example 4: Using SearchResult API ===");
-    let query = "kevin";
+    let query = "Jane Doe";
     let result = db.search_by_name(query);
 
     println!("Search query: '{}'", result.query);
@@ -83,7 +83,7 @@ fn main() {
 
     // Example 5: Case-insensitive search
     println!("=== Example 5: Case-insensitive search ===");
-    let patterns = vec!["ZOOT", "zoot", "ZoOt"];
+    let patterns = vec!["JOHN DOE", "john doe", "JoHn DoE"];
     for pattern in patterns {
         let matches = db.find_ids_by_name_like(pattern);
         println!("Pattern '{}': {} matches", pattern, matches.len());
@@ -150,10 +150,10 @@ mod tests {
         let mut db = UserDatabase::new();
         db.get_data().insert(
             "123456789".to_string(),
-            vec!["TestUser".to_string(), "test_user".to_string()]
+            vec!["Test User".to_string(), "test_user".to_string()]
         );
 
-        let response = handle_whois_command(&db, "TestUser");
+        let response = handle_whois_command(&db, "Test User");
         assert!(response.contains("123456789"));
     }
 }

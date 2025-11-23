@@ -112,20 +112,20 @@ fn main() {
     println!("\nSimulating Discord commands:\n");
 
     // Test !whois command
-    println!("Command: !whois Zoot");
-    println!("{}\n", cmd_whois(&state, "Zoot"));
+    println!("Command: !whois John Doe");
+    println!("{}\n", cmd_whois(&state, "John Doe"));
 
     // Test !whois with partial match
-    println!("Command: !whois mustafa");
-    println!("{}\n", cmd_whois(&state, "mustafa"));
+    println!("Command: !whois Jane Doe");
+    println!("{}\n", cmd_whois(&state, "Jane Doe"));
 
     // Test !lookup command
     println!("Command: !lookup 1315621978648084484");
     println!("{}\n", cmd_lookup(&state, "1315621978648084484"));
 
     // Test !search command
-    println!("Command: !search kevin");
-    println!("{}\n", cmd_search(&state, "kevin"));
+    println!("Command: !search John Doe");
+    println!("{}\n", cmd_search(&state, "John Doe"));
 
     // Test !whois with ID
     println!("Command: !whois 853343414330720302");

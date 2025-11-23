@@ -22,30 +22,30 @@ let db = UserDatabase::from_file("discord_users.json")?;
 ```rust
 // Returns: Option<&Vec<String>>
 db.get_names_by_id("1315621978648084484")
-// → Some(["ilovecats002", "love spreader🥰"])
+// → Some(["username", "name"])
 ```
 
 ### Search by Name (Exact) → Get IDs
 ```rust
 // Returns: Vec<String>
-db.find_ids_by_name("Zoot")
-// → ["853343414330720302"]
+db.find_ids_by_name("Person")
+// → ["85334341430000000"]
 ```
 
 ### Search by Name (Fuzzy) → Get IDs + Matched Names
 ```rust
 // Returns: Vec<(String, Vec<String>)>
-db.find_ids_by_name_like("must")  // Case-insensitive
+db.find_ids_by_name_like("Per")  // Case-insensitive
 // → [
-//     ("1150079713147093093", ["SerMustafa", "sermustafa1"]),
-//     ("1363151203348779118", ["Mustafa"])
+//     ("1150000003140000003", ["Person1", "Username1"]),
+//     ("1363100003300009118", ["person2"])
 //    ]
 ```
 
 ### Advanced Search → Get Both
 ```rust
 // Returns: SearchResult
-let result = db.search_by_name("kevin");
+let result = db.search_by_name("John Doe");
 // result.exact_matches: Vec<String>
 // result.partial_matches: Vec<(String, Vec<String>)>
 // result.has_matches(): bool
@@ -91,9 +91,9 @@ db.user_count()   // usize
 ### Case-insensitive search
 ```rust
 // All of these work the same:
-db.find_ids_by_name_like("ZOOT")
-db.find_ids_by_name_like("zoot")
-db.find_ids_by_name_like("ZoOt")
+db.find_ids_by_name_like("PERSON")
+db.find_ids_by_name_like("person")
+db.find_ids_by_name_like("PeRsOn")
 ```
 
 ## Performance
