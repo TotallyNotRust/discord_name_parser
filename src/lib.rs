@@ -62,6 +62,54 @@ impl UserDatabase {
         Ok(file_count)
     }
 
+    /// Parse HTML content directly from a string (useful for uploaded files)
+    pub fn parse_html_content(&mut self, html_content: &str) -> Result<(), Box<dyn std::error::Error>> {
+        let mut user_map: HashMap<String, HashSet<String>> = self.data
+            .iter()
+            .map(|(id, names)| (id.clone(), names.iter().cloned().collect()))
+            .collect();
+
+        parse_html_content_string(html_content, &mut user_map)?;
+
+        // Convert HashSet back to Vec
+        self.data = user_map
+            .into_iter()
+            .map(|(id, names)| {
+                let mut names_vec: Vec<String> = names.into_iter().collect();
+                names_vec.sort();
+                names_vec.dedup();
+                (id, names_vec)
+            })
+            .collect();
+
+        Ok(())
+    }
+
+    /// Parse multiple HTML files from content strings (useful for batch uploads)
+    pub fn parse_html_contents(&mut self, html_contents: &[String]) -> Result<usize, Box<dyn std::error::Error>> {
+        let mut user_map: HashMap<String, HashSet<String>> = self.data
+            .iter()
+            .map(|(id, names)| (id.clone(), names.iter().cloned().collect()))
+            .collect();
+
+        for content in html_contents {
+            parse_html_content_string(content, &mut user_map)?;
+        }
+
+        // Convert HashSet back to Vec
+        self.data = user_map
+            .into_iter()
+            .map(|(id, names)| {
+                let mut names_vec: Vec<String> = names.into_iter().collect();
+                names_vec.sort();
+                names_vec.dedup();
+                (id, names_vec)
+            })
+            .collect();
+
+        Ok(html_contents.len())
+    }
+
     /// Get all names associated with a user ID (exact match)
     pub fn get_names_by_id(&self, user_id: &str) -> Option<&Vec<String>> {
         self.data.get(user_id)
@@ -177,7 +225,13 @@ fn parse_html_file(
     user_map: &mut HashMap<String, HashSet<String>>,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let content = fs::read_to_string(file_path)?;
+    parse_html_content_string(&content, user_map)
+}
 
+fn parse_html_content_string(
+    content: &str,
+    user_map: &mut HashMap<String, HashSet<String>>,
+) -> Result<(), Box<dyn std::error::Error>> {
     // Regex to match user information blocks
     let user_block_regex1 = Regex::new(
         r#"(?s)title="Username:\s*([^\n"]+)\s*Display Name:\s*([^\n"]+)(?:\s*Server Nickname:\s*([^\n"]+))?\s*User ID:\s*(\d+)"#
@@ -188,7 +242,7 @@ fn parse_html_file(
     )?;
 
     // Method 1: Try to capture complete blocks (Pattern 1 - with Display Name)
-    for cap in user_block_regex1.captures_iter(&content) {
+    for cap in user_block_regex1.captures_iter(content) {
         let username = cap.get(1).map(|m| m.as_str().trim()).unwrap_or("");
         let display_name = cap.get(2).map(|m| m.as_str().trim()).unwrap_or("");
         let server_nickname = cap.get(3).map(|m| m.as_str().trim());
@@ -212,7 +266,7 @@ fn parse_html_file(
     }
 
     // Method 1b: Try to capture blocks without Display Name (Pattern 3)
-    for cap in user_block_regex2.captures_iter(&content) {
+    for cap in user_block_regex2.captures_iter(content) {
         let username = cap.get(1).map(|m| m.as_str().trim()).unwrap_or("");
         let server_nickname = cap.get(2).map(|m| m.as_str().trim());
         let user_id = cap.get(3).map(|m| m.as_str().trim()).unwrap_or("");
