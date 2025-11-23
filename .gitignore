@@ -1,0 +1,19 @@
+# Cargo build output
+/target/
+**/target/
+
+# Incremental/fingerprint data
+**/.fingerprint/
+**/incremental/
+
+# Rust compiled artifacts
+*.rlib
+*.rmeta
+
+# Native libraries / executables
+*.dll
+*.so
+*.dylib
+*.exe
+
+discord_users.json
